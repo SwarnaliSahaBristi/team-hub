@@ -1,61 +1,28 @@
-import Image from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
+"use client";
 
-const ThemeImage = ({ srcLight, srcDark, ...rest }) => {
-  return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
+import { useEffect } from "react";
+import socket from "../src/lib/socket";
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="/turborepo-dark.svg"
-          srcDark="/turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Frontend connected:", socket.id);
+    });
 
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.jsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    socket.emit("join-workspace", "test-workspace-id");
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://turborepo.dev"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Deploy now
-          </a>
+    socket.on("goal-created", (data) => {
+      console.log("🔥 New goal:", data);
+    });
 
-          <a
-            href="https://turborepo.dev/docs"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
+    socket.on("goal-updated", (data) => {
+      console.log("🔄 Goal updated:", data);
+    });
 
-        <Button appName="web" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-    </div>
-  );
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  return <div>Team Hub Running 🚀</div>;
 }

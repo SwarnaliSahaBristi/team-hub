@@ -21,4 +21,11 @@ router.get(
   milestoneController.getMilestones
 );
 
+router.patch(
+  "/status",
+  authMiddleware,
+  workspaceMiddleware,
+  milestoneController.updateMilestoneStatus
+);
+
 module.exports = router;

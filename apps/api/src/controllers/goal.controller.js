@@ -1,6 +1,5 @@
 const prisma = require("../utils/prisma");
 
-// CREATE GOAL
 exports.createGoal = async (req, res) => {
   try {
     const { title, dueDate } = req.body;
@@ -10,9 +9,13 @@ exports.createGoal = async (req, res) => {
         title,
         dueDate: dueDate ? new Date(dueDate) : null,
         workspaceId: req.workspaceId,
-        ownerId: req.user.userId,     
+        ownerId: req.user.userId,
       },
     });
+
+    const io = req.app.get("io");
+
+    io.to(req.workspaceId).emit("goal-created", goal);
 
     res.json(goal);
   } catch (err) {
@@ -46,6 +49,10 @@ exports.updateGoalStatus = async (req, res) => {
       where: { id: goalId },
       data: { status },
     });
+
+    const io = req.app.get("io");
+
+    io.to(req.workspaceId).emit("goal-updated", updated);
 
     res.json(updated);
   } catch (err) {
