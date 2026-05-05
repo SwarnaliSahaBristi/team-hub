@@ -15,9 +15,11 @@ model User {
 
   workspacesOwned  Workspace[]
   memberships      WorkspaceMember[]
+
+  goals Goal[]
 }
 
-model Workspace{
+model Workspace {
   id          String   @id @default(cuid())
   name        String
   description String?
@@ -27,7 +29,9 @@ model Workspace{
   ownerId     String
   owner       User     @relation(fields: [ownerId], references: [id])
 
-  members     WorkspaceMember[] 
+  members     WorkspaceMember[]
+
+  goals       Goal[] 
 }
 
 model WorkspaceMember {
@@ -41,4 +45,18 @@ model WorkspaceMember {
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
   createdAt   DateTime @default(now())
+}
+
+model Goal {
+  id          String   @id @default(cuid())
+  title       String
+  status      String   @default("TODO")
+  dueDate     DateTime?
+  createdAt   DateTime @default(now())
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+  ownerId     String
+  owner       User @relation(fields: [ownerId], references: [id])
 }

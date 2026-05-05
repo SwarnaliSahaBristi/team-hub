@@ -43,3 +43,41 @@ exports.getWorkspaces = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.setActiveWorkspace = async (req, res) => {
+  try {
+    const { workspaceId } = req.body;
+    const userId = req.user.userId;
+
+    if (!workspaceId) {
+      return res.status(400).json({ error: "workspaceId required" });
+    }
+
+    const workspace = await prisma.workspace.findFirst({
+      where: {
+        id: workspaceId,
+        OR: [
+          { ownerId: userId },
+          {
+            members: {
+              some: { userId },
+            },
+          },
+        ],
+      },
+    });
+
+    if (!workspace) {
+      return res.status(403).json({ error: "Access denied to workspace" });
+    }
+
+    res.cookie("activeWorkspace", workspaceId, {
+      httpOnly: true,
+      sameSite: "lax",
+    });
+
+    res.json({ message: "Active workspace set" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
