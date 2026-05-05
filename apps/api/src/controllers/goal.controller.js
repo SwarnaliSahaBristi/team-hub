@@ -37,3 +37,18 @@ exports.getGoals = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+exports.updateGoalStatus = async (req, res) => {
+  try {
+    const { goalId, status } = req.body;
+
+    const updated = await prisma.goal.update({
+      where: { id: goalId },
+      data: { status },
+    });
+
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

@@ -7,6 +7,7 @@ const authMiddleware = require("./src/middleware/auth.middleware");
 const workspaceRoutes = require("./src/routes/workspace.routes");
 const workspaceMiddleware = require("./src/middleware/workspace.middleware");
 const goalRoutes = require("./src/routes/goal.routes");
+const milestoneRoutes = require("./src/routes/milestone.routes");
 
 const app = express();
 
@@ -17,9 +18,10 @@ app.use(cookieParser());
 app.use("/api/auth", authRoutes);
 app.use("/api/workspaces", workspaceRoutes);
 app.use("/api/goals", goalRoutes);
+app.use("/api/milestones", milestoneRoutes);
 
 app.get("/", (req, res) => {
-  res.json({ message: "API is running 🚀" });
+  res.json({ message: "API is running" });
 });
 
 app.get("/api/protected", authMiddleware, (req, res) => {

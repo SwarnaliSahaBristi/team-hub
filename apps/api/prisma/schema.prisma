@@ -50,7 +50,9 @@ model WorkspaceMember {
 model Goal {
   id          String   @id @default(cuid())
   title       String
+  description String?
   status      String   @default("TODO")
+  progress    Int      @default(0)
   dueDate     DateTime?
   createdAt   DateTime @default(now())
 
@@ -59,4 +61,16 @@ model Goal {
 
   ownerId     String
   owner       User @relation(fields: [ownerId], references: [id])
+  milestones  Milestone[]
+}
+
+model Milestone {
+  id        String   @id @default(cuid())
+  title     String
+  progress  Int      @default(0)
+  dueDate   DateTime?
+  createdAt DateTime @default(now())
+
+  goalId    String
+  goal      Goal     @relation(fields: [goalId], references: [id])
 }

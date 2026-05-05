@@ -3,29 +3,22 @@ const router = express.Router();
 
 const authMiddleware = require("../middleware/auth.middleware");
 const workspaceMiddleware = require("../middleware/workspace.middleware");
-const goalController = require("../controllers/goal.controller");
+const milestoneController = require("../controllers/milestone.controller");
 
-// CREATE GOAL
+// CREATE MILESTONE
 router.post(
   "/",
   authMiddleware,
   workspaceMiddleware,
-  goalController.createGoal
+  milestoneController.createMilestone
 );
 
-// GET GOALS (for active workspace)
+// GET MILESTONES BY GOAL
 router.get(
-  "/",
+  "/:goalId",
   authMiddleware,
   workspaceMiddleware,
-  goalController.getGoals
-);
-
-router.patch(
-  "/status",
-  authMiddleware,
-  workspaceMiddleware,
-  goalController.updateGoalStatus
+  milestoneController.getMilestones
 );
 
 module.exports = router;
