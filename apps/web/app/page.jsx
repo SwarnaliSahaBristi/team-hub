@@ -1,28 +1,56 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import socket from "../src/lib/socket";
 
-export default function Home() {
+export default function Dashboard() {
+  const activeWorkspaceId = "YOUR_WORKSPACE_ID";
+  const [goals, setGoals] = useState([]);
+
+  // 1. FETCH GOALS
   useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Frontend connected:", socket.id);
-    });
-
-    socket.emit("join-workspace", "test-workspace-id");
-
-    socket.on("goal-created", (data) => {
-      console.log("🔥 New goal:", data);
-    });
-
-    socket.on("goal-updated", (data) => {
-      console.log("🔄 Goal updated:", data);
-    });
-
-    return () => {
-      socket.disconnect();
-    };
+    fetch("http://localhost:5000/api/goals", {
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then(setGoals);
   }, []);
 
-  return <div>Team Hub Running 🚀</div>;
+  // 2. SOCKET LOGIC (IMPORTANT FIX)
+  useEffect(() => {
+    if (!activeWorkspaceId) return;
+
+    socket.emit("join-workspace", activeWorkspaceId);
+
+    const handleGoalCreated = (goal) => {
+      setGoals((prev) => [goal, ...prev]);
+    };
+
+    const handleGoalUpdated = (updatedGoal) => {
+      setGoals((prev) =>
+        prev.map((g) => (g.id === updatedGoal.id ? updatedGoal : g))
+      );
+    };
+
+    socket.on("goal-created", handleGoalCreated);
+    socket.on("goal-updated", handleGoalUpdated);
+
+    // CLEANUP (VERY IMPORTANT)
+    return () => {
+      socket.off("goal-created", handleGoalCreated);
+      socket.off("goal-updated", handleGoalUpdated);
+    };
+  }, [activeWorkspaceId]);
+
+  return (
+    <div>
+      <h1>Dashboard</h1>
+
+      {goals.map((goal) => (
+        <div key={goal.id}>
+          {goal.title} - {goal.status}
+        </div>
+      ))}
+    </div>
+  );
 }

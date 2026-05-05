@@ -17,7 +17,7 @@ exports.createGoal = async (req, res) => {
 
     io.to(req.workspaceId).emit("goal-created", goal);
 
-    res.json(goal);
+    return res.json(goals || []);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
