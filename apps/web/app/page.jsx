@@ -82,10 +82,10 @@ export default function Dashboard() {
               T
             </div>
             <div>
-              <h1 className="text-lg font-bold text-slate-900 leading-none">
+              <h1 className="text-5xl font-bold text-slate-900 leading-none">
                 Team Hub
               </h1>
-              <span className="text-xs text-slate-400 font-medium">
+              <span className="text-xl text-slate-400 font-medium">
                 Workspace V2
               </span>
             </div>
@@ -95,23 +95,23 @@ export default function Dashboard() {
           <nav className="space-y-1 text-sm font-medium text-slate-600">
             <div className="flex items-center gap-3 px-3 py-2.5 bg-indigo-50/70 text-indigo-600 rounded-lg cursor-pointer transition">
               <LayoutDashboard className="h-4 w-4" />
-              <span>Dashboard</span>
+              <span className="text-xl">Dashboard</span>
             </div>
             <div className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 rounded-lg cursor-pointer transition">
               <FolderKanban className="h-4 w-4" />
-              <span>Workspaces</span>
+              <span className="text-xl">Workspaces</span>
             </div>
             <div className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 rounded-lg cursor-pointer transition">
               <CheckSquare className="h-4 w-4" />
-              <span>Goals</span>
+              <span className="text-xl">Goals</span>
             </div>
             <div className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 rounded-lg cursor-pointer transition">
               <Bell className="h-4 w-4" />
-              <span>Announcements</span>
+              <span className="text-xl">Announcements</span>
             </div>
             <div className="flex items-center gap-3 px-3 py-2.5 hover:bg-slate-50 rounded-lg cursor-pointer transition">
               <Settings className="h-4 w-4" />
-              <span>Settings</span>
+              <span className="text-xl">Settings</span>
             </div>
           </nav>
         </div>
