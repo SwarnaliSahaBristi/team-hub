@@ -74,6 +74,7 @@ exports.setActiveWorkspace = async (req, res) => {
     res.cookie("activeWorkspace", workspaceId, {
       httpOnly: true,
       sameSite: "lax",
+      secure: false,
     });
 
     res.json({ message: "Active workspace set" });

@@ -14,11 +14,11 @@ exports.createGoal = async (req, res) => {
     });
 
     const io = req.app.get("io");
-
     io.to(req.workspaceId).emit("goal-created", goal);
 
-    return res.json(goals || []);
+    return res.status(201).json(goal);
   } catch (err) {
+    console.error("Create goal error:", err);
     res.status(500).json({ error: err.message });
   }
 };

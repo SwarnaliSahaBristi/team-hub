@@ -10,6 +10,7 @@ const workspaceRoutes = require("./src/routes/workspace.routes");
 const workspaceMiddleware = require("./src/middleware/workspace.middleware");
 const goalRoutes = require("./src/routes/goal.routes");
 const milestoneRoutes = require("./src/routes/milestone.routes");
+const actionRoutes = require("./src/routes/actionItem.routes");
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/workspaces", workspaceRoutes);
 app.use("/api/goals", goalRoutes);
 app.use("/api/milestones", milestoneRoutes);
+app.use("/api/actions", actionRoutes);
 
 app.get("/", (req, res) => {
   res.json({ message: "API is running" });

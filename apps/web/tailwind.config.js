@@ -1,3 +1,5 @@
+import daisyui from "daisyui";
+
 export default {
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
@@ -6,5 +8,5 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [daisyui],
 };

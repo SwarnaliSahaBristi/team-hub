@@ -13,8 +13,8 @@ model User {
   password  String
   createdAt DateTime @default(now())
 
-  workspacesOwned  Workspace[]
-  memberships      WorkspaceMember[]
+  workspacesOwned Workspace[]
+  memberships     WorkspaceMember[]
 
   goals Goal[]
 }
@@ -26,51 +26,65 @@ model Workspace {
   accentColor String?
   createdAt   DateTime @default(now())
 
-  ownerId     String
-  owner       User     @relation(fields: [ownerId], references: [id])
+  ownerId String
+  owner   User   @relation(fields: [ownerId], references: [id])
 
-  members     WorkspaceMember[]
+  members WorkspaceMember[]
 
-  goals       Goal[] 
+  goals Goal[]
 }
 
 model WorkspaceMember {
-  id          String   @id @default(cuid())
-  role        String   @default("MEMBER")
+  id   String @id @default(cuid())
+  role String @default("MEMBER")
 
   userId      String
   workspaceId String
 
-  user        User      @relation(fields: [userId], references: [id])
-  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  user      User      @relation(fields: [userId], references: [id])
+  workspace Workspace @relation(fields: [workspaceId], references: [id])
 
-  createdAt   DateTime @default(now())
+  createdAt DateTime @default(now())
 }
 
 model Goal {
-  id          String   @id @default(cuid())
+  id          String       @id @default(cuid())
   title       String
   description String?
-  status      String   @default("TODO")
-  progress    Int      @default(0)
+  status      String       @default("TODO")
+  progress    Int          @default(0)
   dueDate     DateTime?
-  createdAt   DateTime @default(now())
+  createdAt   DateTime     @default(now())
+  actionItems ActionItem[]
 
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
-  ownerId     String
-  owner       User @relation(fields: [ownerId], references: [id])
-  milestones  Milestone[]
+  ownerId    String
+  owner      User        @relation(fields: [ownerId], references: [id])
+  milestones Milestone[]
 }
 
 model Milestone {
-  id        String   @id @default(cuid())
+  id        String    @id @default(cuid())
   title     String
-  status    String   @default("PENDING")
+  status    String    @default("PENDING")
   dueDate   DateTime?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
 
-  goalId    String
-  goal      Goal     @relation(fields: [goalId], references: [id])
+  goalId String
+  goal   Goal   @relation(fields: [goalId], references: [id])
+}
+
+model ActionItem {
+  id          String    @id @default(cuid())
+  title       String
+  status      String    @default("TODO")
+  priority    String    @default("MEDIUM")
+  dueDate     DateTime?
+  goalId      String
+  workspaceId String
+  createdAt   DateTime  @default(now())
+
+  goal Goal @relation(fields: [goalId], references: [id])
 }
