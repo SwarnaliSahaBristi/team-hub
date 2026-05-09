@@ -265,7 +265,7 @@ export default function Dashboard() {
               <button
                 className="btn btn-primary"
                 onClick={createGoal}
-            >
+              >
                 {loading ? "Creating..." : "Create"}
               </button>
             </div>
